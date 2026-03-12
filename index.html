@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silvas Law - Google Ads Copy Review</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #333; line-height: 1.5; padding: 20px; max-width: 900px; margin: 0 auto; }
+
+  .header { background: #0c2340; color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; }
+  .header h1 { font-size: 24px; margin-bottom: 8px; }
+  .header p { color: #a0b4cc; font-size: 15px; }
+
+  .instructions { background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px; padding: 20px; margin-bottom: 30px; }
+  .instructions h2 { font-size: 16px; margin-bottom: 8px; color: #856404; }
+  .instructions p { font-size: 14px; color: #856404; }
+  .instructions ul { font-size: 14px; color: #856404; margin-left: 20px; margin-top: 8px; }
+
+  .campaign-label { background: #0c2340; color: white; display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 16px; letter-spacing: 0.5px; }
+
+  .ad-group { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-left: 4px solid transparent; transition: border-color 0.2s; }
+  .ad-group.approved { border-left-color: #22c55e; }
+  .ad-group.has-feedback { border-left-color: #f59e0b; }
+  .ad-group h3 { font-size: 18px; color: #0c2340; margin-bottom: 4px; }
+  .ad-group .subtitle { font-size: 13px; color: #888; margin-bottom: 16px; }
+
+  .preview-box { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .preview-box .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 10px; font-weight: 600; }
+
+  .headline-list { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 0; }
+  .headline-list li { background: #e8f0fe; color: #1a56db; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.12s; user-select: none; }
+  .headline-list li:hover { background: #1a56db; color: white; }
+  .headline-list li.clicked { background: #1a56db; color: white; }
+
+  .desc-list { list-style: none; }
+  .desc-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; cursor: pointer; transition: background 0.12s; border-radius: 4px; }
+  .desc-list li:hover { background: #f0f4ff; }
+  .desc-list li.clicked { background: #e8f0fe; }
+  .desc-list li:last-child { border-bottom: none; }
+  .desc-num { color: #999; font-size: 12px; margin-right: 6px; }
+
+  .click-hint { font-size: 11px; color: #aaa; margin-top: 6px; font-style: italic; }
+
+  /* Per-section save */
+  .section-save { display: inline-flex; align-items: center; gap: 6px; margin-left: 12px; }
+  .section-save button { padding: 6px 14px; border-radius: 6px; border: 1px solid #d1d5db; background: #f9fafb; font-size: 12px; font-weight: 600; color: #374151; cursor: pointer; transition: all 0.15s; }
+  .section-save button:hover { background: #e5e7eb; }
+  .section-save .saved-check { display: none; font-size: 12px; color: #22c55e; font-weight: 600; }
+  .section-save .saved-check.show { display: inline; animation: fadeInOut 2s forwards; }
+  @keyframes fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; display: none; } }
+
+  /* Toast notification */
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px); background: #0c2340; color: white; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 2000; transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .toast.visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .google-preview { border: 1px solid #dadce0; border-radius: 8px; padding: 16px; margin-bottom: 16px; max-width: 600px; }
+  .google-preview .ad-label { font-size: 11px; color: #202124; font-weight: 700; background: #f1f3f4; display: inline-block; padding: 1px 5px; border-radius: 3px; margin-bottom: 6px; }
+  .google-preview .ad-url { font-size: 13px; color: #202124; margin-bottom: 2px; }
+  .google-preview .ad-url span { color: #4d5156; }
+  .google-preview .ad-headline { font-size: 18px; color: #1a0dab; margin-bottom: 4px; }
+  .google-preview .ad-desc { font-size: 13px; color: #4d5156; line-height: 1.4; }
+
+  .divider { border: none; border-top: 2px solid #e0e0e0; margin: 30px 0; }
+  .footer { text-align: center; color: #999; font-size: 13px; padding: 20px; }
+
+  /* Feedback UI */
+  .feedback-bar { margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; }
+  .feedback-toggle { display: flex; gap: 8px; margin-bottom: 0; }
+  .feedback-toggle button { padding: 8px 16px; border-radius: 8px; border: 2px solid #e0e0e0; background: white; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; }
+  .feedback-toggle button:hover { background: #f5f5f5; }
+  .feedback-toggle button.active-approve { background: #dcfce7; border-color: #22c55e; color: #166534; }
+  .feedback-toggle button.active-change { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+
+  .feedback-input { margin-top: 12px; display: none; }
+  .feedback-input.visible { display: block; }
+  .feedback-input textarea { width: 100%; min-height: 80px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px; font-family: inherit; font-size: 14px; resize: vertical; transition: border-color 0.15s; }
+  .feedback-input textarea:focus { outline: none; border-color: #f59e0b; }
+  .feedback-input .hint { font-size: 12px; color: #999; margin-top: 4px; }
+
+  /* Confirm section */
+  .confirm-section { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .confirm-section h3 { font-size: 18px; color: #0c2340; margin-bottom: 16px; }
+  .confirm-field { margin-bottom: 16px; }
+  .confirm-field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #333; }
+  .confirm-field .field-desc { font-size: 13px; color: #888; margin-bottom: 8px; }
+  .confirm-field input[type="text"] { width: 100%; max-width: 400px; padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; }
+  .confirm-field input:focus { outline: none; border-color: #1a56db; }
+
+  .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
+  .radio-group label { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; font-size: 14px; transition: all 0.15s; }
+  .radio-group label:hover { background: #f5f5f5; }
+  .radio-group input[type="radio"] { accent-color: #1a56db; }
+  .radio-group input[type="radio"]:checked + span { font-weight: 600; }
+
+  /* Progress tracker */
+  .progress-bar { position: sticky; top: 0; z-index: 100; background: white; border-bottom: 1px solid #e0e0e0; padding: 12px 20px; margin: -20px -20px 20px -20px; display: flex; justify-content: space-between; align-items: center; }
+  .progress-text { font-size: 13px; color: #666; }
+  .progress-text strong { color: #0c2340; }
+  .progress-dots { display: flex; gap: 4px; }
+  .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: #e0e0e0; transition: background 0.2s; }
+  .progress-dot.done { background: #22c55e; }
+  .progress-dot.flagged { background: #f59e0b; }
+
+  /* Submit section */
+  .submit-section { background: #0c2340; border-radius: 12px; padding: 30px; text-align: center; margin-top: 30px; }
+  .submit-section h3 { color: white; font-size: 20px; margin-bottom: 8px; }
+  .submit-section p { color: #a0b4cc; font-size: 14px; margin-bottom: 20px; }
+  .submit-btn { background: #22c55e; color: white; border: none; padding: 14px 40px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .submit-btn:hover { background: #16a34a; transform: translateY(-1px); }
+  .submit-btn:disabled { background: #6b7280 !important; cursor: not-allowed; transform: none; opacity: 0.7; }
+  .submit-note { color: #a0b4cc; font-size: 12px; margin-top: 12px; }
+
+  /* Summary modal */
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+  .modal-overlay.visible { display: flex; }
+  .modal { background: white; border-radius: 16px; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 30px; }
+  .modal h3 { font-size: 20px; color: #0c2340; margin-bottom: 16px; }
+  .modal-item { padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+  .modal-item:last-child { border-bottom: none; }
+  .modal-item .item-name { font-weight: 600; font-size: 14px; }
+  .modal-item .item-status { font-size: 13px; margin-top: 2px; }
+  .modal-item .item-status.ok { color: #22c55e; }
+  .modal-item .item-status.change { color: #f59e0b; }
+  .modal-item .item-note { background: #fef3c7; padding: 8px 12px; border-radius: 6px; font-size: 13px; margin-top: 6px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-actions button { flex: 1; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-send { background: #22c55e; color: white; border: none; }
+  .btn-send:hover { background: #16a34a; }
+  .btn-back { background: white; color: #333; border: 2px solid #e0e0e0; }
+  .btn-back:hover { background: #f5f5f5; }
+
+  .sent-confirmation { display: none; text-align: center; padding: 40px 20px; }
+  .sent-confirmation.visible { display: block; }
+  .sent-confirmation .check { font-size: 60px; margin-bottom: 16px; }
+  .sent-confirmation h3 { font-size: 22px; color: #0c2340; margin-bottom: 8px; }
+  .sent-confirmation p { color: #666; font-size: 15px; }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .ad-group { padding: 16px; }
+    .header { padding: 20px; }
+    .header h1 { font-size: 20px; }
+    .progress-bar { padding: 10px 12px; margin: -12px -12px 12px -12px; }
+    .feedback-toggle { flex-direction: column; }
+    .radio-group { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar">
+  <div class="progress-text"><strong id="reviewed-count">0</strong> of <strong>10</strong> ad groups reviewed</div>
+  <div class="progress-dots" id="progress-dots"></div>
+</div>
+
+<div class="header">
+  <h1>Google Ads Copy Review</h1>
+  <p>Richard Silvas Law &bull; Personal Injury &bull; Laredo, TX</p>
+</div>
+
+<div class="instructions">
+  <h2>How This Works</h2>
+  <p>Below are all 10 ad groups I've built for your Google Ads campaigns. For each one, you'll see a preview of how the ad looks in Google, then the full list of headlines and descriptions underneath.</p>
+  <p style="margin-top: 10px;">At the bottom of each ad group, you'll find two buttons:</p>
+  <div style="display:flex;gap:8px;margin:12px 0;">
+    <span style="display:inline-block;padding:6px 14px;border-radius:8px;border:2px solid #22c55e;background:#dcfce7;color:#166534;font-size:13px;font-weight:600;">&#10003; Looks Good</span>
+    <span style="display:inline-block;padding:6px 14px;border-radius:8px;border:2px solid #f59e0b;background:#fef3c7;color:#92400e;font-size:13px;font-weight:600;">&#9998; Suggest Changes</span>
+  </div>
+  <ul>
+    <li><strong>Looks Good</strong> -- the copy works as-is, no changes needed</li>
+    <li><strong>Suggest Changes</strong> -- a text box opens where you type what you'd like changed</li>
+    <li><strong>Click any headline or description</strong> to reference it directly in your suggestion -- it'll drop into the text box for you</li>
+    <li>When you're done reviewing all 10, hit <strong>Send Feedback</strong> at the bottom to send everything to Ruben</li>
+  </ul>
+  <p style="margin-top: 10px;">Google mixes and matches the headlines and descriptions automatically to create different ad combinations. Your progress saves automatically -- you can close the page and come back anytime without losing your work.</p>
+</div>
+
+<!-- ======================== CONFIRMATIONS ======================== -->
+
+<div class="confirm-section">
+  <h3>Quick Confirmations</h3>
+
+  <div class="confirm-field">
+    <label>CallRail Destination Number</label>
+    <div class="field-desc">I have (210) 236-5165 on file. Is this the right destination number for your CallRail tracking?</div>
+    <div class="radio-group">
+      <label><input type="radio" name="phone-confirm" value="yes"><span>Yes, that's correct</span></label>
+      <label><input type="radio" name="phone-confirm" value="no"><span>No, use a different number</span></label>
+    </div>
+    <div id="alt-phone" style="display:none; margin-top: 10px;">
+      <input type="text" id="alt-phone-input" placeholder="Enter the correct number">
+    </div>
+  </div>
+
+  <div class="confirm-field">
+    <label>Firm Name for Ads</label>
+    <div class="field-desc">What's the name of the new PI firm with Almaras? This is what will appear in your ad headlines -- both English and Spanish versions. For example: "Silvas & Almaras Law," "Silvas Almaras Attorneys," etc.</div>
+    <input type="text" id="firm-name-input" placeholder="Firm name as you want it in the ads" style="margin-top:8px;">
+    <div style="font-size:12px;color:#999;margin-top:6px;">If you haven't finalized the name yet, no problem -- just let me know and I'll fill it in later.</div>
+  </div>
+
+  <div class="confirm-field">
+    <label>Monthly Ad Budget</label>
+    <div class="field-desc">I have this set at <strong>$3,000/month</strong>, split between English and Spanish campaigns.</div>
+    <div id="budget-summary" style="margin-top:10px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div style="background:#e8f0fe;padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;color:#1a56db;">$3,000/mo total</div>
+      <div style="font-size:13px;color:#666;">Spanish: $2,400 (80%) &bull; English: $600 (20%)</div>
+    </div>
+    <div style="margin-top:10px;">
+      <a href="#" id="budget-toggle" onclick="toggleBudget(event)" style="font-size:13px;color:#1a56db;text-decoration:none;">Want to adjust? &#9662;</a>
+    </div>
+    <div id="budget-adjust" style="display:none;margin-top:12px;padding:16px;background:#fafafa;border:1px solid #e0e0e0;border-radius:8px;">
+      <div style="margin-bottom:12px;">
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">Total monthly budget</label>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:14px;font-weight:600;">$</span>
+          <input type="number" id="budget-total" value="3000" min="500" step="100" style="width:120px;padding:8px 10px;border:2px solid #e0e0e0;border-radius:8px;font-size:14px;font-family:inherit;" oninput="updateBudgetSplit()">
+          <span style="font-size:13px;color:#888;">/month</span>
+        </div>
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:4px;">Spanish campaign share</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input type="range" id="budget-slider" min="0" max="100" value="80" style="flex:1;accent-color:#1a56db;" oninput="updateBudgetSplit()">
+          <span id="budget-pct" style="font-size:14px;font-weight:600;color:#1a56db;min-width:40px;">80%</span>
+        </div>
+        <div id="budget-breakdown" style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:#666;">
+          <span>Spanish: <strong>$2,400</strong>/mo</span>
+          <span>English: <strong>$600</strong>/mo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="confirm-field">
+    <label>General Notes</label>
+    <div class="field-desc">Anything else I should know before going live? (optional)</div>
+    <textarea id="general-notes" style="width:100%;max-width:500px;min-height:60px;border:2px solid #e0e0e0;border-radius:8px;padding:10px;font-family:inherit;font-size:14px;resize:vertical;" placeholder="Any overall thoughts, preferences, or heads up..."></textarea>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ======================== ENGLISH ======================== -->
+
+<span class="campaign-label">ENGLISH CAMPAIGN &bull; ~$20/day</span>
+
+<!-- AG1: Personal Injury -->
+<div class="ad-group" data-group="en-pi" id="ag-en-pi">
+  <h3>Personal Injury Lawyer</h3>
+  <div class="subtitle">Shown when someone searches "personal injury lawyer laredo", "injury attorney laredo", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Sponsored</div>
+    <div class="ad-url">rsilvas.com <span>› personal-injury</span></div>
+    <div class="ad-headline">Injury Lawyer in Laredo TX | No Fee Unless We Win | Free Consultation Today</div>
+    <div class="ad-desc">Injured in an accident? Get the compensation you deserve. Free consultation available. Fighting for accident victims in Laredo. Call today for a free case review. Available 24/7.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">All Headlines (Google picks 3 at a time) -- click any to reference it</div>
+    <ul class="headline-list">
+      <li>Injury Lawyer in Laredo TX</li><li>Personal Injury Attorney</li><li>No Fee Unless We Win</li><li>Free Consultation Today</li><li>Laredo Injury Lawyer</li><li>Call Now - Free Consult</li><li>Injured? We Can Help</li><li>Se Habla Espanol</li><li class="firm-name-placeholder" data-lang="en" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Firm Name - TBD]</li><li>Get What You Deserve</li><li>Experienced Legal Team</li><li>Accident? Call Us 24/7</li><li>We Fight for Your Rights</li><li>Trusted Laredo Attorney</li><li>Your Recovery Starts Here</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descriptions (Google picks 2 at a time)</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Injured in an accident? Get the compensation you deserve. Free consultation available.</li>
+      <li><span class="desc-num">2.</span> No fee unless we win your case. Experienced attorney serving Laredo and South Texas.</li>
+      <li><span class="desc-num">3.</span> Fighting for accident victims in Laredo. Call today for a free case review. Available 24/7.</li>
+      <li><span class="desc-num">4.</span> Dedicated personal injury attorney in Laredo, TX. We handle your case so you can recover.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('en-pi','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('en-pi','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-en-pi">
+      <textarea placeholder="e.g. 'Se Habla Espanol' needs an accent mark ('Se Habla Español') ... or ... Change 'Available 24/7' to business hours only"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description above to reference it here. Or just type freely.</div>
+        <div class="section-save"><button onclick="saveSection('en-pi')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG2: Car Accident -->
+<div class="ad-group" data-group="en-car" id="ag-en-car">
+  <h3>Car Accident Lawyer</h3>
+  <div class="subtitle">Shown when someone searches "car accident lawyer laredo", "car wreck lawyer laredo", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Sponsored</div>
+    <div class="ad-url">rsilvas.com <span>› car-accident</span></div>
+    <div class="ad-headline">Car Accident Lawyer Laredo | No Fee Unless We Win | Free Consultation Today</div>
+    <div class="ad-desc">Hurt in a car accident in Laredo? We fight to get you maximum compensation. Call today. No fee unless we win. Experienced car accident attorney serving Laredo and Webb County.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">All Headlines</div>
+    <ul class="headline-list">
+      <li>Car Accident Lawyer Laredo</li><li>Auto Accident Attorney</li><li>No Fee Unless We Win</li><li>Free Consultation Today</li><li>Hurt in a Car Wreck?</li><li>Call Now - Free Consult</li><li>Car Crash? Get Help Now</li><li>Se Habla Espanol</li><li class="firm-name-placeholder" data-lang="en" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Firm Name - TBD]</li><li>We Fight for You</li><li>Laredo Auto Accident Atty</li><li>Injured in a Car Wreck?</li><li>Get the Money You Deserve</li><li>Trusted Laredo Attorney</li><li>Your Recovery Starts Here</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descriptions</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Hurt in a car accident in Laredo? We fight to get you maximum compensation. Call today.</li>
+      <li><span class="desc-num">2.</span> No fee unless we win. Experienced car accident attorney serving Laredo and Webb County.</li>
+      <li><span class="desc-num">3.</span> Been in a car wreck? Get a free case review today. We handle everything so you can heal.</li>
+      <li><span class="desc-num">4.</span> Laredo car accident lawyer fighting for your rights. Free consultation. Se habla espanol.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('en-car','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('en-car','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-en-car">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('en-car')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG3: Truck Accident -->
+<div class="ad-group" data-group="en-truck" id="ag-en-truck">
+  <h3>Truck Accident Lawyer</h3>
+  <div class="subtitle">Shown when someone searches "truck accident lawyer laredo", "18 wheeler accident lawyer", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Sponsored</div>
+    <div class="ad-url">rsilvas.com <span>› truck-accident</span></div>
+    <div class="ad-headline">Truck Accident Lawyer | IH-35 Truck Accident? | No Fee Unless We Win</div>
+    <div class="ad-desc">Injured in a truck accident on IH-35? We fight trucking companies for maximum recovery. No fee unless we win. Experienced truck accident attorney serving Laredo and South TX.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">All Headlines</div>
+    <ul class="headline-list">
+      <li>Truck Accident Lawyer</li><li>18 Wheeler Accident Atty</li><li>No Fee Unless We Win</li><li>Free Consultation Today</li><li>Laredo Truck Wreck?</li><li>Call Now - Free Consult</li><li>IH-35 Truck Accident?</li><li>Se Habla Espanol</li><li class="firm-name-placeholder" data-lang="en" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Firm Name - TBD]</li><li>Semi Truck Crash? Call Us</li><li>Big Rig Accident Lawyer</li><li>Trucking Accident Help</li><li>Get Maximum Compensation</li><li>Trusted Laredo Attorney</li><li>We Take On Trucking Cos</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descriptions</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Injured in a truck accident on IH-35? We fight trucking companies for maximum recovery.</li>
+      <li><span class="desc-num">2.</span> No fee unless we win. Experienced truck accident attorney serving Laredo and South TX.</li>
+      <li><span class="desc-num">3.</span> 18 wheeler wreck? Get a free case review. We take on trucking companies and insurers.</li>
+      <li><span class="desc-num">4.</span> Laredo truck accident lawyer with decades of legal experience. Free consult. Call 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('en-truck','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('en-truck','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-en-truck">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('en-truck')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG4: Motorcycle -->
+<div class="ad-group" data-group="en-moto" id="ag-en-moto">
+  <h3>Motorcycle Accident Lawyer</h3>
+  <div class="subtitle">Shown when someone searches "motorcycle accident lawyer laredo", "bike accident lawyer", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Sponsored</div>
+    <div class="ad-url">rsilvas.com <span>› motorcycle-accident</span></div>
+    <div class="ad-headline">Motorcycle Accident Lawyer | Injured on Your Bike? | Free Consultation Today</div>
+    <div class="ad-desc">Injured in a motorcycle accident? We fight for maximum compensation. Free case review. No fee unless we win your case. Experienced motorcycle accident attorney in Laredo, TX.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">All Headlines</div>
+    <ul class="headline-list">
+      <li>Motorcycle Accident Lawyer</li><li>Bike Wreck Attorney</li><li>No Fee Unless We Win</li><li>Free Consultation Today</li><li>Motorcycle Crash? Call Us</li><li>Call Now - Free Consult</li><li>Injured on Your Bike?</li><li>Se Habla Espanol</li><li class="firm-name-placeholder" data-lang="en" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Firm Name - TBD]</li><li>Get What You Deserve</li><li>Laredo Motorcycle Atty</li><li>We Fight for Riders</li><li>Motorcycle Injury Help</li><li>Trusted Laredo Attorney</li><li>Your Recovery Starts Here</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descriptions</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Injured in a motorcycle accident? We fight for maximum compensation. Free case review.</li>
+      <li><span class="desc-num">2.</span> No fee unless we win your case. Experienced motorcycle accident attorney in Laredo, TX.</li>
+      <li><span class="desc-num">3.</span> Motorcycle wreck in Laredo? Get a free consultation. We handle your case start to finish.</li>
+      <li><span class="desc-num">4.</span> Dedicated to motorcycle accident victims in Laredo. Call today. Se habla espanol.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('en-moto','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('en-moto','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-en-moto">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('en-moto')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG5: Wrongful Death -->
+<div class="ad-group" data-group="en-wd" id="ag-en-wd">
+  <h3>Wrongful Death Attorney</h3>
+  <div class="subtitle">Shown when someone searches "wrongful death attorney laredo", "wrongful death lawyer", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Sponsored</div>
+    <div class="ad-url">rsilvas.com <span>› wrongful-death</span></div>
+    <div class="ad-headline">Wrongful Death Attorney | Lost a Loved One? | Justice for Your Family</div>
+    <div class="ad-desc">Lost a loved one due to negligence? We help families get justice. Free case consultation. No fee unless we win. Compassionate wrongful death attorney serving Laredo families.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">All Headlines</div>
+    <ul class="headline-list">
+      <li>Wrongful Death Attorney</li><li>Lost a Loved One?</li><li>No Fee Unless We Win</li><li>Free Consultation Today</li><li>Compassionate Legal Help</li><li>Call Now - Free Consult</li><li>Laredo Wrongful Death</li><li>Se Habla Espanol</li><li class="firm-name-placeholder" data-lang="en" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Firm Name - TBD]</li><li>Justice for Your Family</li><li>We Fight for Families</li><li>Wrongful Death Claims</li><li>Get the Justice You Need</li><li>Trusted Laredo Attorney</li><li>Your Family Deserves More</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descriptions</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Lost a loved one due to negligence? We help families get justice. Free case consultation.</li>
+      <li><span class="desc-num">2.</span> No fee unless we win. Compassionate wrongful death attorney serving Laredo families.</li>
+      <li><span class="desc-num">3.</span> Wrongful death claims in Laredo, TX. We fight for the compensation your family deserves.</li>
+      <li><span class="desc-num">4.</span> Experienced wrongful death lawyer. Let us handle the legal fight while you grieve. Call.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('en-wd','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('en-wd','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-en-wd">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('en-wd')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ======================== SPANISH ======================== -->
+
+<span class="campaign-label">SPANISH CAMPAIGN &bull; ~$80/day</span>
+
+<!-- AG6: Abogado de Accidentes -->
+<div class="ad-group" data-group="es-pi" id="ag-es-pi">
+  <h3>Abogado de Accidentes</h3>
+  <div class="subtitle">Cuando alguien busca "abogado de accidentes laredo", "abogado de lesiones personales", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Patrocinado</div>
+    <div class="ad-url">rsilvas.com <span>› accidentes</span></div>
+    <div class="ad-headline">Abogado de Accidentes | Consulta Gratis Hoy | Llame Ahora - Gratis</div>
+    <div class="ad-desc">Tuvo un accidente? Obtenga la compensacion que merece. Consulta gratis. Llame ahora. No cobramos si no ganamos su caso. Abogado de accidentes en Laredo con experiencia.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">Titulares (Google escoge 3 a la vez)</div>
+    <ul class="headline-list">
+      <li>Abogado de Accidentes</li><li>Lesiones Personales</li><li>Consulta Gratis Hoy</li><li>Llame Hoy - Sin Costo</li><li>Abogado en Laredo TX</li><li>Llame Ahora - Gratis</li><li>Tuvo un Accidente?</li><li>Hablamos Su Idioma</li><li class="firm-name-placeholder" data-lang="es" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Nombre del Bufete - TBD]</li><li>Obtenga Lo Que Merece</li><li>Lucharemos Por Usted</li><li>Accidente? Llame 24/7</li><li>Abogado de Confianza</li><li>Experiencia Legal</li><li>Su Recuperacion Importa</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descripciones (Google escoge 2 a la vez)</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Tuvo un accidente? Obtenga la compensacion que merece. Consulta gratis. Llame ahora.</li>
+      <li><span class="desc-num">2.</span> No cobramos si no ganamos su caso. Abogado de accidentes en Laredo con experiencia.</li>
+      <li><span class="desc-num">3.</span> Abogado de lesiones personales en Laredo, TX. Luchamos por sus derechos. Llame hoy.</li>
+      <li><span class="desc-num">4.</span> Lastimado en un accidente? Llame para una consulta gratis. Estamos disponibles 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('es-pi','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('es-pi','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-es-pi">
+      <textarea placeholder="What would you change? Feel free to write in English or Spanish."></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it. If phrasing sounds off for Laredo, tell me the local way.</div>
+        <div class="section-save"><button onclick="saveSection('es-pi')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG7: Auto -->
+<div class="ad-group" data-group="es-car" id="ag-es-car">
+  <h3>Abogado Accidentes de Auto</h3>
+  <div class="subtitle">Cuando alguien busca "abogado accidentes de carro laredo", "abogado choque de carro", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Patrocinado</div>
+    <div class="ad-url">rsilvas.com <span>› accidente-de-auto</span></div>
+    <div class="ad-headline">Accidente de Auto? | Abogado de Choques | Consulta Gratis Hoy</div>
+    <div class="ad-desc">Choque de carro en Laredo? Luchamos para que reciba la compensacion que merece. Llame. No cobramos si no ganamos. Abogado de accidentes de auto en Laredo. Consulta gratis.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">Titulares</div>
+    <ul class="headline-list">
+      <li>Accidente de Auto?</li><li>Abogado de Choques</li><li>Consulta Gratis Hoy</li><li>Llame Hoy - Sin Costo</li><li>Choque de Carro Laredo</li><li>Llame Ahora - Gratis</li><li>Abogado de Accidentes</li><li>Laredo TX - Llame Hoy</li><li class="firm-name-placeholder" data-lang="es" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Nombre del Bufete - TBD]</li><li>Obtenga Lo Que Merece</li><li>Accidente de Carro?</li><li>Lucharemos Por Usted</li><li>Abogado de Confianza</li><li>Lastimado? Llame Ya</li><li>Su Caso No Cuesta Nada</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descripciones</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Choque de carro en Laredo? Luchamos para que reciba la compensacion que merece. Llame.</li>
+      <li><span class="desc-num">2.</span> No cobramos si no ganamos. Abogado de accidentes de auto en Laredo. Consulta gratis.</li>
+      <li><span class="desc-num">3.</span> Accidente de auto? Consulta gratis hoy. Nos encargamos de todo para que usted se recupere.</li>
+      <li><span class="desc-num">4.</span> Abogado de choques de carro en Laredo, TX. Experiencia legal. Llame ahora, disponible 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('es-car','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('es-car','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-es-car">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('es-car')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG8: Camion -->
+<div class="ad-group" data-group="es-truck" id="ag-es-truck">
+  <h3>Abogado Accidentes de Camion</h3>
+  <div class="subtitle">Cuando alguien busca "abogado accidente de camion laredo", "abogado accidente de trailer", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Patrocinado</div>
+    <div class="ad-url">rsilvas.com <span>› accidente-de-camion</span></div>
+    <div class="ad-headline">Accidente de Camion? | Choque con Trailer? | Accidente en IH-35?</div>
+    <div class="ad-desc">Accidente con camion en la IH-35? Luchamos contra las companias de transporte. Llame. No cobramos si no ganamos. Abogado de accidentes de camion en Laredo. Consulta gratis.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">Titulares</div>
+    <ul class="headline-list">
+      <li>Accidente de Camion?</li><li>Abogado de Traileres</li><li>Consulta Gratis Hoy</li><li>Llame Hoy - Sin Costo</li><li>Choque con Trailer?</li><li>Llame Ahora - Gratis</li><li>Accidente en IH-35?</li><li>Abogado en Laredo TX</li><li class="firm-name-placeholder" data-lang="es" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Nombre del Bufete - TBD]</li><li>Camion 18 Ruedas?</li><li>Lucharemos Por Usted</li><li>Obtenga Lo Que Merece</li><li>Abogado de Confianza</li><li>Lastimado? Llame Ya</li><li>Demandamos Companias</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descripciones</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Accidente con camion en la IH-35? Luchamos contra las companias de transporte. Llame.</li>
+      <li><span class="desc-num">2.</span> No cobramos si no ganamos. Abogado de accidentes de camion en Laredo. Consulta gratis.</li>
+      <li><span class="desc-num">3.</span> Choque con trailer o camion? Consulta gratis. Demandamos a las companias responsables.</li>
+      <li><span class="desc-num">4.</span> Abogado de accidentes de camion en Laredo, TX. Experiencia legal. Disponible 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('es-truck','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('es-truck','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-es-truck">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('es-truck')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG9: Motocicleta -->
+<div class="ad-group" data-group="es-moto" id="ag-es-moto">
+  <h3>Abogado Accidentes de Motocicleta</h3>
+  <div class="subtitle">Cuando alguien busca "abogado accidente de motocicleta laredo", "abogado choque de moto", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Patrocinado</div>
+    <div class="ad-url">rsilvas.com <span>› accidente-de-moto</span></div>
+    <div class="ad-headline">Accidente de Motocicleta? | Choque de Moto? | Consulta Gratis Hoy</div>
+    <div class="ad-desc">Accidente de motocicleta en Laredo? Luchamos por la compensacion que usted merece. No cobramos si no ganamos. Abogado de accidentes de moto en Laredo. Consulta gratis.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">Titulares</div>
+    <ul class="headline-list">
+      <li>Accidente de Motocicleta?</li><li>Abogado de Motos Laredo</li><li>Consulta Gratis Hoy</li><li>Llame Hoy - Sin Costo</li><li>Choque de Moto?</li><li>Llame Ahora - Gratis</li><li>Abogado de Accidentes</li><li>Abogado en Laredo TX</li><li class="firm-name-placeholder" data-lang="es" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Nombre del Bufete - TBD]</li><li>Obtenga Lo Que Merece</li><li>Lastimado en Moto?</li><li>Lucharemos Por Usted</li><li>Abogado de Confianza</li><li>Lastimado? Llame Ya</li><li>Su Recuperacion Importa</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descripciones</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Accidente de motocicleta en Laredo? Luchamos por la compensacion que usted merece.</li>
+      <li><span class="desc-num">2.</span> No cobramos si no ganamos. Abogado de accidentes de moto en Laredo. Consulta gratis.</li>
+      <li><span class="desc-num">3.</span> Choque de motocicleta? Consulta gratis hoy. Nos encargamos de su caso de inicio a fin.</li>
+      <li><span class="desc-num">4.</span> Abogado dedicado a victimas de accidentes de moto en Laredo. Llame hoy. Disponible 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('es-moto','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('es-moto','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-es-moto">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('es-moto')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AG10: Muerte Injusta -->
+<div class="ad-group" data-group="es-wd" id="ag-es-wd">
+  <h3>Abogado Muerte Injusta</h3>
+  <div class="subtitle">Cuando alguien busca "abogado muerte injusta laredo", "abogado muerte por negligencia", etc.</div>
+
+  <div class="google-preview">
+    <div class="ad-label">Patrocinado</div>
+    <div class="ad-url">rsilvas.com <span>› muerte-injusta</span></div>
+    <div class="ad-headline">Abogado Muerte Injusta | Perdio a un Ser Querido? | Justicia Para Su Familia</div>
+    <div class="ad-desc">Perdio a un ser querido por negligencia? Ayudamos a familias a obtener justicia. Llame. No cobramos si no ganamos. Abogado de muerte injusta en Laredo. Consulta gratis hoy.</div>
+  </div>
+
+  <div class="preview-box">
+    <div class="label">Titulares</div>
+    <ul class="headline-list">
+      <li>Abogado Muerte Injusta</li><li>Perdio a un Ser Querido?</li><li>Consulta Gratis Hoy</li><li>Llame Hoy - Sin Costo</li><li>Justicia Para Su Familia</li><li>Llame Ahora - Gratis</li><li>Muerte por Negligencia</li><li>Abogado en Laredo TX</li><li class="firm-name-placeholder" data-lang="es" style="background:#fef3c7;color:#92400e;border:1px dashed #f59e0b;">[Nombre del Bufete - TBD]</li><li>Luchamos Por Familias</li><li>Su Familia Merece Mas</li><li>Reclamos Muerte Injusta</li><li>Abogado de Confianza</li><li>Ayuda Legal Compasiva</li><li>Obtenga Justicia Hoy</li>
+    </ul>
+  </div>
+  <div class="preview-box">
+    <div class="label">Descripciones</div>
+    <ul class="desc-list">
+      <li><span class="desc-num">1.</span> Perdio a un ser querido por negligencia? Ayudamos a familias a obtener justicia. Llame.</li>
+      <li><span class="desc-num">2.</span> No cobramos si no ganamos. Abogado de muerte injusta en Laredo. Consulta gratis hoy.</li>
+      <li><span class="desc-num">3.</span> Reclamos de muerte injusta en Laredo, TX. Luchamos por lo que su familia merece.</li>
+      <li><span class="desc-num">4.</span> Abogado compasivo para casos de muerte injusta. Dejenos luchar por usted. Disponible 24/7.</li>
+    </ul>
+  </div>
+  <div class="feedback-bar">
+    <div class="feedback-toggle">
+      <button onclick="setFeedback('es-wd','approve',this)">&#10003; Looks Good</button>
+      <button onclick="setFeedback('es-wd','change',this)">&#9998; Suggest Changes</button>
+    </div>
+    <div class="feedback-input" id="fb-es-wd">
+      <textarea placeholder="What would you change?"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+        <div class="hint">Click any headline or description to reference it here.</div>
+        <div class="section-save"><button onclick="saveSection('es-wd')">Save</button><span class="saved-check">Saved &#10003;</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ======================== SUBMIT ======================== -->
+
+<div class="submit-section" id="submit-section">
+  <h3>Ready to Submit?</h3>
+  <p>Review your selections above, then hit the button to send your feedback directly to Ruben. No email needed.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <button class="submit-btn" style="background:#4a5568;" onclick="saveDraft()">Save Draft</button>
+    <button class="submit-btn" id="submit-btn" onclick="showSummary()">Send to Ruben</button>
+  </div>
+  <div class="submit-note" id="draft-msg" style="display:none;">Draft saved. Your progress is safe.</div>
+</div>
+
+<!-- Summary modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h3>Your Feedback Summary</h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn-back" onclick="closeSummary()">Go Back & Edit</button>
+      <button class="btn-send" id="send-btn" onclick="sendFeedback()">Send to Ruben</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sent confirmation -->
+<div class="sent-confirmation" id="sent-confirm">
+  <div class="check">&#10003;</div>
+  <h3>Feedback Sent!</h3>
+  <p>Ruben has your feedback. He'll follow up if he has any questions. Thanks for reviewing!</p>
+</div>
+
+<div class="footer">
+  Prepared by Ruben Ramos &bull; March 2026
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const groups = ['en-pi','en-car','en-truck','en-moto','en-wd','es-pi','es-car','es-truck','es-moto','es-wd'];
+const groupNames = {
+  'en-pi': 'Personal Injury Lawyer (EN)',
+  'en-car': 'Car Accident Lawyer (EN)',
+  'en-truck': 'Truck Accident Lawyer (EN)',
+  'en-moto': 'Motorcycle Accident Lawyer (EN)',
+  'en-wd': 'Wrongful Death Attorney (EN)',
+  'es-pi': 'Abogado de Accidentes (ES)',
+  'es-car': 'Abogado Accidentes de Auto (ES)',
+  'es-truck': 'Abogado Accidentes de Camion (ES)',
+  'es-moto': 'Abogado Accidentes de Motocicleta (ES)',
+  'es-wd': 'Abogado Muerte Injusta (ES)'
+};
+const state = {};
+
+// Init progress dots
+const dotsContainer = document.getElementById('progress-dots');
+groups.forEach(g => {
+  const dot = document.createElement('div');
+  dot.className = 'progress-dot';
+  dot.id = 'dot-' + g;
+  dotsContainer.appendChild(dot);
+});
+
+// Show alt phone field
+document.querySelectorAll('input[name="phone-confirm"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('alt-phone').style.display = r.value === 'no' ? 'block' : 'none';
+  });
+});
+// Firm name auto-populate into TBD placeholders
+document.getElementById('firm-name-input').addEventListener('input', function() {
+  const name = this.value.trim();
+  document.querySelectorAll('.firm-name-placeholder').forEach(el => {
+    if (name) {
+      el.textContent = name;
+    } else {
+      // Restore original based on language
+      el.textContent = el.dataset.lang === 'es' ? '[Nombre del Bufete - TBD]' : '[Firm Name - TBD]';
+    }
+  });
+});
+
+function toggleBudget(e) {
+  e.preventDefault();
+  const panel = document.getElementById('budget-adjust');
+  const link = document.getElementById('budget-toggle');
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    link.innerHTML = 'Collapse &#9652;';
+  } else {
+    panel.style.display = 'none';
+    link.innerHTML = 'Want to adjust? &#9662;';
+  }
+}
+
+function updateBudgetSplit() {
+  const total = parseInt(document.getElementById('budget-total').value) || 3000;
+  const pct = parseInt(document.getElementById('budget-slider').value);
+  const spanish = Math.round(total * pct / 100);
+  const english = total - spanish;
+  document.getElementById('budget-pct').textContent = pct + '%';
+  document.getElementById('budget-breakdown').innerHTML =
+    '<span>Spanish: <strong>$' + spanish.toLocaleString() + '</strong>/mo</span>' +
+    '<span>English: <strong>$' + english.toLocaleString() + '</strong>/mo</span>';
+  // Update the summary too
+  document.querySelector('#budget-summary').innerHTML =
+    '<div style="background:#e8f0fe;padding:8px 14px;border-radius:8px;font-size:14px;font-weight:600;color:#1a56db;">$' + total.toLocaleString() + '/mo total</div>' +
+    '<div style="font-size:13px;color:#666;">Spanish: $' + spanish.toLocaleString() + ' (' + pct + '%) &bull; English: $' + english.toLocaleString() + ' (' + (100 - pct) + '%)</div>';
+}
+
+function setFeedback(group, type, btn) {
+  const adGroup = document.getElementById('ag-' + group);
+  const inputDiv = document.getElementById('fb-' + group);
+  const buttons = btn.parentElement.querySelectorAll('button');
+
+  // Reset buttons
+  buttons.forEach(b => { b.className = ''; });
+
+  if (type === 'approve') {
+    btn.className = 'active-approve';
+    inputDiv.classList.remove('visible');
+    adGroup.className = 'ad-group approved';
+    state[group] = { status: 'approved', note: '' };
+  } else {
+    btn.className = 'active-change';
+    inputDiv.classList.add('visible');
+    inputDiv.querySelector('textarea').focus();
+    adGroup.className = 'ad-group has-feedback';
+    state[group] = { status: 'changes', note: '' };
+    // Track textarea changes
+    inputDiv.querySelector('textarea').oninput = function() {
+      state[group].note = this.value;
+    };
+  }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  let count = 0;
+  groups.forEach(g => {
+    const dot = document.getElementById('dot-' + g);
+    if (state[g]) {
+      count++;
+      dot.className = state[g].status === 'approved' ? 'progress-dot done' : 'progress-dot flagged';
+    } else {
+      dot.className = 'progress-dot';
+    }
+  });
+  document.getElementById('reviewed-count').textContent = count;
+}
+
+function showSummary() {
+  const modal = document.getElementById('modal');
+  const body = document.getElementById('modal-body');
+  let html = '';
+
+  // Confirmations
+  const phoneRadio = document.querySelector('input[name="phone-confirm"]:checked');
+  const firmRadio = document.querySelector('input[name="firm-name"]:checked');
+  const generalNotes = document.getElementById('general-notes').value.trim();
+
+  html += '<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #e0e0e0;">';
+  html += '<div class="item-name" style="font-weight:700;margin-bottom:8px;">Confirmations</div>';
+
+  if (phoneRadio) {
+    if (phoneRadio.value === 'yes') {
+      html += '<div style="font-size:13px;">Phone: (210) 236-5165 confirmed &#10003;</div>';
+    } else {
+      const alt = document.getElementById('alt-phone-input').value || '(not provided)';
+      html += '<div style="font-size:13px;color:#f59e0b;">Phone: Use ' + alt + ' instead</div>';
+    }
+  } else {
+    html += '<div style="font-size:13px;color:#999;">Phone: Not answered yet</div>';
+  }
+
+  const firmName = document.getElementById('firm-name-input').value.trim();
+  if (firmName) {
+    html += '<div style="font-size:13px;">Firm name for ads: "' + firmName + '"</div>';
+  } else {
+    html += '<div style="font-size:13px;color:#999;">Firm name: Not provided yet</div>';
+  }
+
+  const bTotal = parseInt(document.getElementById('budget-total').value) || 3000;
+  const bPct = parseInt(document.getElementById('budget-slider').value);
+  const bSpanish = Math.round(bTotal * bPct / 100);
+  const bEnglish = bTotal - bSpanish;
+  if (bTotal !== 3000 || bPct !== 80) {
+    html += '<div style="font-size:13px;color:#f59e0b;">Budget adjusted: $' + bTotal.toLocaleString() + '/mo (Spanish ' + bPct + '% / English ' + (100 - bPct) + '%)</div>';
+  } else {
+    html += '<div style="font-size:13px;">Budget: $3,000/mo (80/20 split) -- no changes</div>';
+  }
+
+  if (generalNotes) {
+    html += '<div class="item-note" style="margin-top:8px;">' + generalNotes + '</div>';
+  }
+  html += '</div>';
+
+  // Ad groups
+  groups.forEach(g => {
+    html += '<div class="modal-item">';
+    html += '<div class="item-name">' + groupNames[g] + '</div>';
+    if (state[g]) {
+      if (state[g].status === 'approved') {
+        html += '<div class="item-status ok">&#10003; Looks good</div>';
+      } else {
+        html += '<div class="item-status change">&#9998; Changes requested</div>';
+        if (state[g].note) {
+          html += '<div class="item-note">' + state[g].note.replace(/\n/g,'<br>') + '</div>';
+        }
+      }
+    } else {
+      html += '<div class="item-status" style="color:#999;">Not reviewed yet</div>';
+    }
+    html += '</div>';
+  });
+
+  body.innerHTML = html;
+  modal.classList.add('visible');
+}
+
+function closeSummary() {
+  document.getElementById('modal').classList.remove('visible');
+}
+
+function buildEmailBody() {
+  let body = 'GOOGLE ADS COPY REVIEW - Richard Silvas Law\n';
+  body += '==========================================\n\n';
+
+  // Confirmations
+  const phoneRadio = document.querySelector('input[name="phone-confirm"]:checked');
+  const firmName = document.getElementById('firm-name-input').value.trim();
+  const generalNotes = document.getElementById('general-notes').value.trim();
+
+  body += 'CONFIRMATIONS\n';
+  if (phoneRadio) {
+    if (phoneRadio.value === 'yes') {
+      body += '  Phone (210) 236-5165: Confirmed\n';
+    } else {
+      body += '  Phone: Use ' + (document.getElementById('alt-phone-input').value || '(not specified)') + ' instead\n';
+    }
+  }
+  if (firmName) {
+    body += '  Firm name for ads: "' + firmName + '"\n';
+  } else {
+    body += '  Firm name: Not decided yet\n';
+  }
+  const bTotal2 = parseInt(document.getElementById('budget-total').value) || 3000;
+  const bPct2 = parseInt(document.getElementById('budget-slider').value);
+  if (bTotal2 !== 3000 || bPct2 !== 80) {
+    const bSp = Math.round(bTotal2 * bPct2 / 100);
+    const bEn = bTotal2 - bSp;
+    body += '  Budget ADJUSTED: $' + bTotal2 + '/mo total (Spanish $' + bSp + ' / English $' + bEn + ')\n';
+  } else {
+    body += '  Budget: $3,000/mo (80/20) -- no changes\n';
+  }
+  if (generalNotes) {
+    body += '  General notes: ' + generalNotes + '\n';
+  }
+  body += '\n';
+
+  // Ad groups
+  body += 'AD GROUP FEEDBACK\n';
+  body += '------------------------------------------\n';
+  groups.forEach(g => {
+    body += '\n' + groupNames[g] + ': ';
+    if (state[g]) {
+      if (state[g].status === 'approved') {
+        body += 'APPROVED\n';
+      } else {
+        body += 'CHANGES REQUESTED\n';
+        if (state[g].note) {
+          body += '  > ' + state[g].note.replace(/\n/g, '\n  > ') + '\n';
+        }
+      }
+    } else {
+      body += 'Not reviewed\n';
+    }
+  });
+
+  return body;
+}
+
+// Toast notification
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(() => { toast.classList.remove('visible'); }, 2500);
+}
+
+function saveDraft() {
+  saveState();
+  showToast('Draft saved. Your progress is safe.');
+}
+
+// Per-section save
+function saveSection(group) {
+  saveState();
+  const check = document.querySelector('#ag-' + group + ' .saved-check');
+  if (check) {
+    check.classList.remove('show');
+    void check.offsetWidth; // force reflow for re-animation
+    check.classList.add('show');
+  }
+}
+
+// Clickable ad elements - click to reference in suggestion box
+function initClickableElements() {
+  document.querySelectorAll('.ad-group').forEach(agDiv => {
+    const group = agDiv.dataset.group;
+    if (!group) return;
+
+    // Headlines
+    agDiv.querySelectorAll('.headline-list li').forEach(li => {
+      if (li.style.border) return; // skip TBD placeholders
+      li.addEventListener('click', () => {
+        insertReference(group, li.textContent.trim(), li);
+      });
+    });
+
+    // Descriptions
+    agDiv.querySelectorAll('.desc-list li').forEach(li => {
+      li.addEventListener('click', () => {
+        // Get just the description text without the number prefix
+        const text = li.textContent.replace(/^\d+\.\s*/, '').trim();
+        insertReference(group, text, li);
+      });
+    });
+  });
+}
+
+function insertReference(group, text, el) {
+  const agDiv = document.getElementById('ag-' + group);
+  const inputDiv = document.getElementById('fb-' + group);
+  const textarea = inputDiv.querySelector('textarea');
+  const buttons = agDiv.querySelectorAll('.feedback-toggle button');
+
+  // Auto-switch to "Suggest Changes" if not already
+  if (!state[group] || state[group].status !== 'changes') {
+    setFeedback(group, 'change', buttons[1]);
+  }
+
+  // Brief highlight on clicked element
+  el.classList.add('clicked');
+  setTimeout(() => el.classList.remove('clicked'), 600);
+
+  // Insert quoted reference into textarea
+  const current = textarea.value;
+  const prefix = current.length > 0 && !current.endsWith('\n') ? '\n' : '';
+  textarea.value = current + prefix + '"' + text + '" \u2192 ';
+  textarea.focus();
+  // Move cursor to end
+  textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+
+  // Update state
+  if (!state[group]) state[group] = { status: 'changes', note: '' };
+  state[group].note = textarea.value;
+}
+
+async function sendFeedback() {
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  const body = buildEmailBody();
+  const results = { telegram: false, gmail: false };
+
+  // Fire BOTH Telegram and Gmail in parallel - always
+  const telegramPromise = fetch('http://100.92.205.121:9394/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: body }),
+    signal: AbortSignal.timeout(8000)
+  }).then(r => { if (r.ok) results.telegram = true; }).catch(() => {});
+
+  const gmailPromise = fetch('https://formsubmit.co/ajax/ruben.ramos@gmail.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ _subject: 'Google Ads Copy Review - Silvas', message: body }),
+    signal: AbortSignal.timeout(8000)
+  }).then(r => { if (r.ok) results.gmail = true; }).catch(() => {});
+
+  await Promise.all([telegramPromise, gmailPromise]);
+
+  if (results.telegram || results.gmail) {
+    // At least one channel succeeded
+    document.getElementById('modal').classList.remove('visible');
+    document.getElementById('submit-section').style.display = 'none';
+    document.getElementById('sent-confirm').classList.add('visible');
+    localStorage.removeItem('silvas-review');
+
+    // If one channel failed, note it subtly
+    if (!results.telegram && results.gmail) {
+      document.getElementById('sent-confirm').querySelector('p').textContent +=
+        ' (Sent via email. Telegram delivery will be retried.)';
+    } else if (results.telegram && !results.gmail) {
+      document.getElementById('sent-confirm').querySelector('p').textContent +=
+        ' (Sent via Telegram. Email copy will follow shortly.)';
+    }
+  } else {
+    // Both failed - fall back to mailto
+    const subject = encodeURIComponent('Google Ads Copy Review - Silvas');
+    const mailBody = encodeURIComponent(body);
+    window.location.href = 'mailto:ruben.ramos@gmail.com?subject=' + subject + '&body=' + mailBody;
+
+    document.getElementById('modal').classList.remove('visible');
+    document.getElementById('submit-section').style.display = 'none';
+
+    const confirm = document.getElementById('sent-confirm');
+    confirm.querySelector('h3').textContent = 'Almost there!';
+    confirm.querySelector('p').textContent = 'Your email app should have opened with the feedback. Just hit send and you\'re done.';
+    confirm.classList.add('visible');
+  }
+}
+
+// Save/restore state with localStorage
+function saveState() {
+  const data = {
+    state: state,
+    phone: document.querySelector('input[name="phone-confirm"]:checked')?.value,
+    altPhone: document.getElementById('alt-phone-input').value,
+    firmName: document.getElementById('firm-name-input').value,
+    notes: document.getElementById('general-notes').value,
+    budgetTotal: document.getElementById('budget-total').value,
+    budgetPct: document.getElementById('budget-slider').value,
+    budgetAdjusted: document.getElementById('budget-adjust').style.display !== 'none'
+  };
+  localStorage.setItem('silvas-review', JSON.stringify(data));
+}
+
+// Auto-save on any interaction
+document.addEventListener('change', saveState);
+document.addEventListener('input', saveState);
+
+// Init clickable elements
+initClickableElements();
+
+// Restore on load
+window.addEventListener('load', () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('silvas-review'));
+    if (!saved) return;
+
+    // Restore confirmations
+    if (saved.phone) {
+      document.querySelector('input[name="phone-confirm"][value="' + saved.phone + '"]').checked = true;
+      if (saved.phone === 'no') {
+        document.getElementById('alt-phone').style.display = 'block';
+        document.getElementById('alt-phone-input').value = saved.altPhone || '';
+      }
+    }
+    if (saved.firmName) {
+      const fi = document.getElementById('firm-name-input');
+      fi.value = saved.firmName;
+      fi.dispatchEvent(new Event('input')); // trigger auto-populate
+    }
+    if (saved.budgetTotal) {
+      document.getElementById('budget-total').value = saved.budgetTotal;
+      document.getElementById('budget-slider').value = saved.budgetPct || 80;
+      updateBudgetSplit();
+      if (saved.budgetAdjusted) {
+        document.getElementById('budget-adjust').style.display = 'block';
+        document.getElementById('budget-toggle').innerHTML = 'Collapse &#9652;';
+      }
+    }
+    if (saved.notes) document.getElementById('general-notes').value = saved.notes;
+
+    // Restore ad group feedback
+    if (saved.state) {
+      Object.keys(saved.state).forEach(g => {
+        const s = saved.state[g];
+        state[g] = s;
+        const adGroup = document.getElementById('ag-' + g);
+        const inputDiv = document.getElementById('fb-' + g);
+        const buttons = adGroup.querySelectorAll('.feedback-toggle button');
+
+        if (s.status === 'approved') {
+          buttons[0].className = 'active-approve';
+          adGroup.className = 'ad-group approved';
+        } else {
+          buttons[1].className = 'active-change';
+          adGroup.className = 'ad-group has-feedback';
+          inputDiv.classList.add('visible');
+          inputDiv.querySelector('textarea').value = s.note || '';
+          inputDiv.querySelector('textarea').oninput = function() { state[g].note = this.value; };
+        }
+      });
+      updateProgress();
+    }
+  } catch(e) {}
+});
+</script>
+
+</body>
+</html>
